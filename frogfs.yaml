@@ -1,0 +1,7 @@
+collect:
+  - files
+  - $frogfs/README.md: readme.md
+
+filter:
+  '*':
+    - compress deflate

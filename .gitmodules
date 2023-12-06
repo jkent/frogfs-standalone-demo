@@ -1,0 +1,4 @@
+[submodule "frogfs"]
+	path = frogfs
+	url = https://github.com/jkent/frogfs.git
+	branch = next
