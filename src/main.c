@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     struct stat sb;
     void *mmap_addr = NULL;
     frogfs_fs_t *fs = NULL;
-    frogfs_f_t *f = NULL;
+    frogfs_fh_t *f = NULL;
 
     frogfs_config_t config = {
         .addr = &frogfs_bin,
@@ -151,10 +151,10 @@ int main(int argc, char *argv[])
                             fputs("File is compressed with an unknown"
                                     "scheme.\n", stderr);
                         }
-                        fprintf(stderr, "File is %d bytes.\n", stat.real_sz);
+                        fprintf(stderr, "File is %d bytes.\n", stat.size);
                         if (stat.compression != 0) {
                             fprintf(stderr, "File is %d bytes compressed.\n",
-                                    stat.data_sz);
+                                    stat.compressed_sz);
                         }
                     } else if (stat.type == FROGFS_ENTRY_TYPE_DIR) {
                         fprintf(stderr, "Object '%s' is a directory.\n",
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
                     exit(EXIT_FAILURE);
                 }
 
-                if (entry->child_count < 0xFF00) {
+                if (!frogfs_is_file(entry)) {
                     fprintf(stderr, "Object '%s' is not a file.\n", optarg);
                     exit(EXIT_FAILURE);
                 }
@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
                         exit(EXIT_FAILURE);
                     }
 
-                    if (!FROGFS_ISDIR(entry)) {
+                    if (!frogfs_is_dir(entry)) {
                         fprintf(stderr, "Entry '%s' is not a directory.\n",
                                 optarg);
                         exit(EXIT_FAILURE);
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
                     entry = NULL;
                 }
 
-                frogfs_d_t *d = frogfs_opendir(fs, entry);
+                frogfs_dh_t *d = frogfs_opendir(fs, entry);
                 if (d == NULL) {
                     fprintf(stderr, "Error opening directory '%s'.\n");
                     exit(EXIT_FAILURE);
@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
 
                 while (entry = frogfs_readdir(d)) {
                     const char *path = frogfs_get_path(fs, entry);
-                    if (FROGFS_ISFILE(entry)) {
+                    if (frogfs_is_file(entry)) {
                         printf("F %s\n", path);
                     } else {
                         printf("D %s\n", path);

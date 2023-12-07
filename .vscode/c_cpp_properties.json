@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "../../include"
+                "${workspaceFolder}/frogfs/include"
             ],
             "cStandard": "c11",
             "cppStandard": "c++17",
