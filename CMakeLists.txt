@@ -4,8 +4,6 @@ project(frogfs-standalone-demo)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CONFIG_FROGFS_USE_DEFLATE y)
-set(CONFIG_FROGFS_USE_HEATSHRINK y)
-set(CONFIG_FROGFS_LOG_LEVEL_DEBUG y)
 
 include(frogfs/cmake/standalone.cmake)
 

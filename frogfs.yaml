@@ -1,5 +1,5 @@
 collect:
-  - files
+  - files/
   - $frogfs/README.md: readme.md
 
 filter:
