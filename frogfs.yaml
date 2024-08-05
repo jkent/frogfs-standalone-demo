@@ -4,4 +4,4 @@ collect:
 
 filter:
   '*':
-    - compress deflate
+    - compress zlib
